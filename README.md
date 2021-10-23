@@ -6,7 +6,7 @@
 
  date    : 2021/10/23 
 
- update  :
+ update  : 2021/10/24
 
 ***
 ### Summary
@@ -33,12 +33,10 @@ npx prisma migrate dev --name init
 ### Setup , etc
 * next.config.js , 
 
-if change URL, mongodb URL, database name
+if change URL
 
 ```
 BASE_URL: "http://localhost:3001"
-MONGODB_URL: "mongodb://localhost:27017",
-MONGODB_DB_NAME: "hcms",    
 ```
 
 * package.json / scripts
@@ -66,6 +64,8 @@ yarn serve
 
 ***
 ### Blog : 
+
+https://zenn.dev/knaka0209/books/4ee53bad905ec2/viewer/7fa84e
 
 ***
 
