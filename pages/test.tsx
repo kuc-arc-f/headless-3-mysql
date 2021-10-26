@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import Layout from '../components/layout'
-//import LibCookie from '../lib/LibCookie'
+import LibTest from '../libs/LibTest'
 //
 export default class Test extends Component {
   constructor(props){
     super(props)
   }
-  componentDidMount(){
+  async componentDidMount(){
+    await LibTest.getTest();
   }   
   render() {
     return (

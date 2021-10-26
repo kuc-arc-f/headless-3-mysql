@@ -25,7 +25,7 @@ export default async function getFind (req, res){
       throw new Error('DB error, apikey nothing');
     }
     const key = keys[0]; 
- console.log(key);      
+//console.log(key);      
     // order
     if(typeof req.query.order !='undefined'){
       /*
@@ -46,13 +46,23 @@ export default async function getFind (req, res){
       */
     }else{
       if(( typeof req.query.skip !='undefined') &&
-      ( typeof req.query.limit !='undefined')){
-//console.log("skip=", req.query.skip, req.query.limit );
-        const limit = {skip: parseInt(req.query.skip) , limit: parseInt(req.query.limit) }
-//        items = await LibMongo.get_arrayLimit("contents" , where, limit)  
+      ( typeof req.query.take !='undefined')){
+        const limit = {skip: Number(req.query.skip) , take: Number(req.query.take) }
+//console.log(limit);
+        items = await prisma.content.findMany({
+          where: { siteId: key.siteId, name: content_name},
+          orderBy: [
+            { id: 'desc', },
+          ],
+          skip: Number(req.query.skip),
+          take: Number(req.query.take),
+        });
       }else{
         items = await prisma.content.findMany({
           where: { siteId: key.siteId, name: content_name},
+          orderBy: [
+            { id: 'desc', },
+          ],
         });
       }
       items = LibApiFind.convert_items(items) 

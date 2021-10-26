@@ -21,6 +21,16 @@ content name : Site > ContentType > content name
 apikey : Site > open > API KEY 
 
 ***
+* option (page)
+
+```
+curl "http://localhost:3001/api/get/find?content=posts&apikey=z0IStFXrZOcrpTm0WlmVgRWC&skip=0&take=10"
+```
+* skip : start position (ex: 0)
+
+* take: record  (ex: 10)
+
+***
 ### findone
 
 get 1 record
