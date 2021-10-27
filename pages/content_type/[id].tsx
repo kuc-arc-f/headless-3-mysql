@@ -9,7 +9,6 @@ import Footer from '../../components/Footer'
 import ContentRow from './ContentRow'
 //
 function Page(data) {
-//console.log(data.item._id )
   const site_id= data.item.id
   const item = data.item
   let items = data.contents 
@@ -29,7 +28,7 @@ function Page(data) {
       <div><h3>Site : {item.name}</h3>
       </div>
       <div className="row">
-        <div className="col-sm-6 p_site_id">Site_id : {item._id}
+        <div className="col-sm-6 p_site_id">Site_id : {item.id}
         </div>
         <div className="col-sm-6">
           <div>{item.content}</div>

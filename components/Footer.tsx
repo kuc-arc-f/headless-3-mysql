@@ -3,7 +3,7 @@ import Head from 'next/head';
 //
 export default function footer(){
   return (
-  <div className ="footer_box mt5" id="id_foot" >
+  <div className ="footer_box" id="id_foot" >
     <Link href="/about" >
       <a><p className="p_foot_str">About</p>
       </a>
@@ -13,7 +13,7 @@ export default function footer(){
       color: #FFF;
     }
     .footer_box {
-      margin-top: 20px;
+      margin-top: 280px;
       background-color: #757575;
       color: #fff;
       padding: 140px 40px;

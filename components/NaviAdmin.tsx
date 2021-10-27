@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 //
 export default function Page(props){
-// console.log(props.site_name )
+//console.log(props)
   return (
   <nav className="navbar navbar-expand-md navbar-light bg-light">
     <Link href="/" > 

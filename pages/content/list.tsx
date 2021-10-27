@@ -58,7 +58,7 @@ export default class ContentList extends React.Component<IProps, IState> {
     const site_id = this.props.query.site_id
     let contents = []
     const page = 1    
-    const display = 0
+    let display = 0
     LibCookie.set_cookie("site_id", this.props.query.site_id )
     const res = await fetch(process.env.BASE_URL +'/api/sites/show?id=' + site_id)
     const json = await res.json()
@@ -66,15 +66,17 @@ export default class ContentList extends React.Component<IProps, IState> {
     const jsonColumn = await resColumn.json()    
     const item = json.item
     const apikey = json.apikey 
-    if( typeof this.props.query.column !='undefined'){
+    if( typeof this.props.query.column !== 'undefined'){
       column_id = this.props.query.column
       const url_content = '/api/content/list_id?site_id='+ site_id + "&id=" + column_id
       const resContent = await fetch(process.env.BASE_URL + url_content )
       const jsonContent = await resContent.json()
       contents = jsonContent.items
-      contents = LibCommon.convert_items(contents)    
+      contents = LibCommon.convert_items(contents);
+      LibPagenate.init()
+      display = LibPagenate.is_paging_display(contents.length);     
     }    
-//console.log( json )  
+//console.log( "display=", display )  
     this.setState({
       item:item , 
       column_id: column_id,
@@ -98,24 +100,24 @@ export default class ContentList extends React.Component<IProps, IState> {
   }   
   async handleClickColumn(id){
 //console.log( "handleClickColumn=", id )
-      const site_id= this.state.site_id
-      let url_content = '/api/content/list_id?site_id='+ site_id + "&id=" + id
-      url_content += "&page=" + String(this.state.page)
-      const resContent = await fetch(process.env.BASE_URL + url_content )
-      const jsonContent = await resContent.json()
-      let contents = jsonContent.items
-      LibPagenate.init()
-      const display = LibPagenate.is_paging_display(contents.length)  
-      contents = LibCommon.convert_items(contents)       
-// console.log( contents )
-      this.setState({ contents: contents,
-        column_id: id,
-        pagingDisplay: display,
-        page: 1,
-      })     
-      const elemKey = document.querySelector<HTMLFormElement>('#search_key');
-      elemKey.value = ""
-      this.addSearchEvent(elemKey)
+    const site_id= this.state.site_id
+    let url_content = '/api/content/list_id?site_id='+ site_id + "&id=" + id
+    url_content += "&page=" + String(this.state.page)
+    const resContent = await fetch(process.env.BASE_URL + url_content )
+    const jsonContent = await resContent.json()
+    let contents = jsonContent.items
+    LibPagenate.init()
+    const display = LibPagenate.is_paging_display(contents.length)  
+    contents = LibCommon.convert_items(contents)       
+//console.log( contents )
+    this.setState({ contents: contents,
+      column_id: id,
+      pagingDisplay: display,
+      page: 1,
+    })     
+    const elemKey = document.querySelector<HTMLFormElement>('#search_key');
+    elemKey.value = ""
+    this.addSearchEvent(elemKey)
   }
   async addSearchEvent(elem){
     const self = this
@@ -156,7 +158,7 @@ console.log("#handleClickCopyKey")
     document.execCommand("copy");
   }
   async parentMethod(page){
-console.log("#parentMethod.p=" + page )
+//console.log("#parentMethod.p=" + page )
     let url_content = '/api/content/list_id?site_id='+ this.state.site_id + "&id=" + this.state.column_id
     url_content += "&page=" + String(page)
     const resContent = await fetch(process.env.BASE_URL + url_content )
@@ -194,7 +196,7 @@ console.log("#parentMethod.p=" + page )
 // console.log("pagingDisplay=" ,this.props.pagingDisplay )
     return (
     <LayoutAdmin >
-      <NaviAdmin  site_name={item.name} site_id={item._id} />
+      <NaviAdmin  site_name={item.name} site_id={item.id} />
       <FlashBox messages_error={messages_error} messages_success="" />
       <div className="container content_list_wrap">
         <div className="row">
@@ -208,7 +210,7 @@ console.log("#parentMethod.p=" + page )
         </div>
           <hr className="mt-0 mb-2" />
           <div className="row">
-          <div className="col-sm-4 p_apikey">Site_id : {item._id}<br />
+          <div className="col-sm-4 p_apikey">Site_id : {item.id}<br />
           </div>
           <div className="col-sm-4 p_apikey" >
             API KEY : {key}
@@ -262,7 +264,7 @@ console.log("#parentMethod.p=" + page )
     //console.log(item )
               let values = item.values
               values = JSON.parse(values || '[]')
-   console.log(values)
+//console.log(values)
               return(<ContentRow key={index}
                 id={item.id} date={item.created_at}
                 content_url={content_url+ `&id=${item.id}`} 

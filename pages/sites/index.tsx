@@ -21,7 +21,7 @@ export default class Page extends React.Component<IProps> {
     const res = await fetch(process.env.BASE_URL+ '/api/sites/list')
     const json = await res.json()
     const items = LibCommon.convert_items(json.items)
-console.log(items)
+//console.log(items)
     return { 
       items: items,
       user_id :cookies(ctx).user_id,

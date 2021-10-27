@@ -3,7 +3,7 @@ const { PrismaClient } = require('@prisma/client');
 export default async function contentNew(req, res){
   try{
     const data = req.body
-console.log( data )
+//console.log( data )
     const cole_name = data.content_name
 //    const values = JSON.parse(data.colmuns_json || '[]')
     const prisma = new PrismaClient()
@@ -13,7 +13,6 @@ console.log( data )
         columnId: Number(data.column_id),
         siteId: Number(data.site_id),
         values: data.colmuns_json,
-//        user_id: "",
         userId: 0,
       }
     }); 
