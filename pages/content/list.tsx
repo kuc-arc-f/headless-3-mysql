@@ -97,7 +97,14 @@ export default class ContentList extends React.Component<IProps, IState> {
     }
     // コピーのイベントが発生したときに、クリップボードに書き込むようにしておく
     document.addEventListener("copy" , listener);    
-  }   
+  }
+  clickColumnMove(id){
+//console.log( "clickColumnMove=", id );
+    const site_id= this.state.site_id;
+    const url_column = `/content/list?site_id=${site_id}&column=${id}`;
+console.log( "url_column=", url_column );
+    location.href= url_column;
+  }     
   async handleClickColumn(id){
 //console.log( "handleClickColumn=", id )
     const site_id= this.state.site_id
@@ -230,7 +237,7 @@ console.log("#handleClickCopyKey")
                 <div className="row">
                   <div className="col-sm-8">
                     <button className="btn btn-sm btn-outline-primary"
-                    onClick={this.handleClickColumn.bind(this, item.id)}>{item.name}
+                    onClick={this.clickColumnMove.bind(this, item.id)}>{item.name}
                     </button>
                   </div>
                   <div className="col-sm-4">

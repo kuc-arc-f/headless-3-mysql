@@ -61,7 +61,7 @@ console.log(  jsonContent )
     this.state = {name: '', content: '', _token : ''}
     this.handleClick = this.handleClick.bind(this);
     this.handleClickDelete = this.handleClickDelete.bind(this);
-//console.log(props )
+console.log(props.content )
   }
   componentDidMount(){
     this.setState({ _token: this.props.csrf.token });
@@ -75,7 +75,8 @@ console.log(  jsonContent )
     this.add_item()
   } 
   async handleClickDelete(){
-    console.log( "content_id=", this.props.content_id)
+//console.log( "content_id=", this.props.content_id)
+//console.log( "columnId=", this.props.content.columnId);
     try {
       const content_name = this.props.content_name
       const item = {
@@ -93,8 +94,10 @@ console.log(  jsonContent )
       if (res.status === 200) {
         alert("Complete, delete")
         const content_id = this.props.content_id
-        const url  = `/content/list?site_id=${this.props.site_id}&column=${content_id}`
-        Router.push(url);
+        const url  = `/content/list?site_id=${this.props.site_id}&column=${this.props.content.columnId}`
+//console.log(url);
+//        Router.push(url);
+        location.href = url;
       } else {
         throw new Error(await res.text());
       }
