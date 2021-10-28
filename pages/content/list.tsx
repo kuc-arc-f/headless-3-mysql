@@ -85,7 +85,12 @@ export default class ContentList extends React.Component<IProps, IState> {
       apikey: apikey,
       pagingDisplay: display,
       page: page,
-    })
+    });
+    const elemKey = document.querySelector<HTMLFormElement>('#search_key');
+//console.log(elemKey);
+    if(elemKey !== null){
+      this.addSearchEvent(elemKey);
+    }
   }
   init_copy_event(){
     const str = "コピーする文字";
@@ -146,7 +151,9 @@ console.log( "url_column=", url_column );
           });
           if (res.status === 200) {
             const json = await res.json()
-            self.setState({ contents: json.items ,
+//console.log(json.items);
+            const contents = LibCommon.convert_items(json.items);
+            self.setState({ contents: contents,
               pagingDisplay: 0,
             });
           } else {
@@ -192,15 +199,18 @@ console.log("#handleClickCopyKey")
     }
     const paginateDisp = this.state.pagingDisplay
     let messages_error = ""
-    if( typeof this.props.flash.messages_error != 'undefined'){
+    if( typeof this.props.flash.messages_error !== 'undefined'){
       messages_error = this.props.flash.messages_error
     }    
     const content_url =`/content/edit?site_id=${site_id}&content_name=${item.name}`
     const url_new = `/content/create?content_id=${column_id}&site_id=${site_id}`
     const contents = this.state.contents 
-    const items = this.state.columns 
-//console.log( items )
-// console.log("pagingDisplay=" ,this.props.pagingDisplay )
+    const items = this.state.columns;
+    let content_name = "";
+    if( typeof contents[0] !== 'undefined'){
+      content_name = contents[0].name;
+    }      
+//console.log(content_name);
     return (
     <LayoutAdmin >
       <NaviAdmin  site_name={item.name} site_id={item.id} />
@@ -228,7 +238,7 @@ console.log("#handleClickCopyKey")
         <hr className="mt-2 mb-2" />
         <div className="row">
           <div className="col-sm-4">
-            <h3 className="content_title">Content Name :</h3> 
+            <h3 className="content_title">Contents:</h3> 
             <hr className="mt-2 mb-2" />
             {items.map((item, index) => {
       // console.log(item)
@@ -257,7 +267,8 @@ console.log("#handleClickCopyKey")
               <Link href={url_new}>
                 <a className="btn btn-sm btn-primary mt-0">Ceate Content</a>
               </Link>
-                <input type="text" id="search_key" name="search_key" autoComplete="off" 
+              <span className="mx-4">Content: <b>{content_name}</b></span>
+              <input type="text" id="search_key" name="search_key" autoComplete="off" 
                 className="form-control mt-2"placeholder="Search key input , and Return" />
             </div>
             : ""}
