@@ -6,7 +6,10 @@ export default async function List (req, res){
     const site_id = Number(req.query.site_id); 
     const prisma = new PrismaClient()
     const items = await prisma.column.findMany({
-      where: { siteId: site_id }
+      where: { siteId: site_id },
+      orderBy: [
+        { name: 'asc', },
+      ],
     })
     await prisma.$disconnect()
 // console.log(items)
